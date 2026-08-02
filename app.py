@@ -55,11 +55,12 @@ if st.session_state.records:
     # Dashboard
     st.subheader("📊 Dashboard")
 
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3, col4 = st.columns(4)
 
     col1.metric("📚 Total Hours", f"{df['Hours'].sum():.1f}")
     col2.metric("📖 Subjects", df["Subject"].nunique())
     col3.metric("📝 Records", len(df))
+    col4.metric("⏱️ Avg Hrs/Session", f"{df['Hours'].sum()/len(df):.2f}")
 
     top_subject = df.groupby("Subject")["Hours"].sum().idxmax()
     top_hours = df.groupby("Subject")["Hours"].sum().max()
