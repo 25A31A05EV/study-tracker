@@ -86,6 +86,10 @@ if st.session_state.records:
         file_name="study_records.csv",
         mime="text/csv"
     )
+    # Clear All Records
+    if st.button("🗑️ Clear All Records"):
+        st.session_state.records = []
+        st.rerun()
 
 # ----------------------------
 # Grade Predictor
