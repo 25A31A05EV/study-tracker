@@ -28,7 +28,7 @@ hours = st.number_input(
     max_value=24.0,
     step=0.5
 )
-
+date = st.date_input("Date:")
 # ----------------------------
 # Submit Button
 # ----------------------------
@@ -38,7 +38,8 @@ if st.button("Submit"):
             {
                 "Name": name,
                 "Subject": subject,
-                "Hours": hours
+                "Hours": hours,
+                "Date": date
             }
         )
         st.success(f"Great job, {name}! You studied {subject} for {hours} hours today.")
