@@ -29,6 +29,12 @@ hours = st.number_input(
     step=0.5
 )
 date = st.date_input("Date:")
+marks = st.number_input(
+    "Marks scored (out of 100):",
+    min_value=0.0,
+    max_value=100.0,
+    step=1.0
+)
 # ----------------------------
 # Submit Button
 # ----------------------------
@@ -39,7 +45,8 @@ if st.button("Submit"):
                 "Name": name,
                 "Subject": subject,
                 "Hours": hours,
-                "Date": date
+                "Date": date,
+                "Marks": marks
             }
         )
         st.success(f"Great job, {name}! You studied {subject} for {hours} hours today.")
