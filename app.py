@@ -94,33 +94,46 @@ if st.session_state.records:
         file_name="study_records.csv",
         mime="text/csv"
     )
+    # Delete Individual Record
+    st.subheader("🗑️ Delete a Record")
+    record_to_delete = st.selectbox(
+        "Select record to delete:",
+        options=range(len(df)),
+        format_func=lambda i: f"{df.iloc[i]['Name']} - {df.iloc[i]['Subject']} - {df.iloc[i]['Date']}"
+    )
+    if st.button("Delete Selected Record"):
+        st.session_state.records.pop(record_to_delete)
+        st.rerun()
+
     # Clear All Records
     if st.button("🗑️ Clear All Records"):
         st.session_state.records = []
         st.rerun()
-
 # ----------------------------
 # Grade Predictor
 # ----------------------------
 st.divider()
 st.subheader("🎯 Grade Predictor (Machine Learning)")
 
-train_hours = np.array([[1], [2], [3], [4], [5], [6], [7], [8]])
-train_marks = np.array([35, 45, 55, 60, 68, 75, 85, 92])
+if len(st.session_state.records) >= 2:
+    df_ml = pd.DataFrame(st.session_state.records)
+    X = df_ml[["Hours"]].values
+    y = df_ml["Marks"].values
 
-model = LinearRegression()
-model.fit(train_hours, train_marks)
+    model = LinearRegression()
+    model.fit(X, y)
 
-predict_hours = st.number_input(
-    "Enter study hours to predict marks:",
-    min_value=0.0,
-    max_value=24.0,
-    step=0.5,
-    key="predict"
-)
+    predict_hours = st.number_input(
+        "Enter study hours to predict marks:",
+        min_value=0.0,
+        max_value=24.0,
+        step=0.5,
+        key="predict"
+    )
 
-if st.button("Predict Marks"):
-    predicted_marks = model.predict([[predict_hours]])[0]
-    predicted_marks = max(0, min(100, predicted_marks))
-
-    st.success(f"📈 Estimated Marks: {predicted_marks:.2f}")
+    if st.button("Predict Marks"):
+        predicted_marks = model.predict([[predict_hours]])[0]
+        predicted_marks = max(0, min(100, predicted_marks))
+        st.success(f"📈 Estimated Marks: {predicted_marks:.2f}")
+else:
+    st.warning("⚠️ Add at least 2 study records with marks to enable predictions.")
