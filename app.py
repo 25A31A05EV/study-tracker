@@ -77,13 +77,25 @@ if st.session_state.records:
 
     # Study Records
     st.subheader("📋 Study Records")
-    st.dataframe(df, width='stretch')
+    selected_subject = st.selectbox(
+        "Filter by subject:",
+        options=["All"] + list(df["Subject"].unique())
+    )
+    if selected_subject != "All":
+        filtered_df = df[df["Subject"] == selected_subject]
+    else:
+        filtered_df = df
+    st.dataframe(filtered_df, width='stretch')
 
     # Subject-wise Chart
     st.subheader("📈 Subject-wise Study Hours")
-
     subject_hours = df.groupby("Subject")["Hours"].sum()
     st.bar_chart(subject_hours)
+
+    # Marks Trend Chart
+    st.subheader("📈 Marks Trend Over Time")
+    df_sorted = df.sort_values("Date")
+    st.line_chart(df_sorted.set_index("Date")["Marks"])
 
     # Download CSV
     csv = df.to_csv(index=False).encode("utf-8")
