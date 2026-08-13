@@ -92,6 +92,11 @@ if st.session_state.records:
     subject_hours = df.groupby("Subject")["Hours"].sum()
     st.bar_chart(subject_hours)
 
+    # Subject-wise Average Marks
+    st.subheader("📊 Subject-wise Average Marks")
+    subject_avg_marks = df.groupby("Subject")["Marks"].mean()
+    st.bar_chart(subject_avg_marks)
+
     # Marks Trend Chart
     st.subheader("📈 Marks Trend Over Time")
     df_sorted = df.sort_values("Date")
