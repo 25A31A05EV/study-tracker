@@ -69,6 +69,18 @@ if st.session_state.records:
     col2.metric("📖 Subjects", df["Subject"].nunique())
     col3.metric("📝 Records", len(df))
     col4.metric("⏱️ Avg Hrs/Session", f"{df['Hours'].sum()/len(df):.2f}")
+    # Study Streak Counter
+    st.subheader("🔥 Study Streak")
+    unique_dates = sorted(df["Date"].unique(), reverse=True)
+    streak = 0
+    today = pd.Timestamp.now().normalize().date()
+    for i, d in enumerate(unique_dates):
+        expected_date = today - pd.Timedelta(days=i)
+        if d == expected_date:
+            streak += 1
+        else:
+            break
+    st.metric("Current Streak", f"{streak} days")
 
     top_subject = df.groupby("Subject")["Hours"].sum().idxmax()
     top_hours = df.groupby("Subject")["Hours"].sum().max()
