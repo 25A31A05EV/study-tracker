@@ -132,6 +132,36 @@ if st.session_state.records:
         file_name="study_records.csv",
         mime="text/csv"
     )
+
+    # Edit a Record
+    st.subheader("✏️ Edit a Record")
+    record_to_edit = st.selectbox(
+        "Select record to edit:",
+        options=range(len(df)),
+        format_func=lambda i: f"{df.iloc[i]['Name']} - {df.iloc[i]['Subject']} - {df.iloc[i]['Date']}",
+        key="edit_select"
+    )
+
+    with st.form("edit_form"):
+        edit_subject = st.text_input("Subject", value=st.session_state.records[record_to_edit]["Subject"])
+        edit_hours = st.number_input(
+            "Hours", value=float(st.session_state.records[record_to_edit]["Hours"]),
+            min_value=0.0, max_value=24.0, step=0.5
+        )
+        edit_marks = st.number_input(
+            "Marks", value=float(st.session_state.records[record_to_edit]["Marks"]),
+            min_value=0.0, max_value=100.0, step=1.0
+        )
+        update_submitted = st.form_submit_button("Update Record")
+
+        if update_submitted:
+            st.session_state.records[record_to_edit]["Subject"] = edit_subject
+            st.session_state.records[record_to_edit]["Hours"] = edit_hours
+            st.session_state.records[record_to_edit]["Marks"] = edit_marks
+            st.success("Record updated!")
+            st.rerun()
+
+        
     # Delete Individual Record
     st.subheader("🗑️ Delete a Record")
     record_to_delete = st.selectbox(
