@@ -72,6 +72,7 @@ if st.session_state.records:
     col2.metric("📖 Subjects", df["Subject"].nunique())
     col3.metric("📝 Records", len(df))
     col4.metric("⏱️ Avg Hrs/Session", f"{df['Hours'].sum()/len(df):.2f}")
+
     # Study Streak Counter
     st.subheader("🔥 Study Streak")
     unique_dates = sorted(df["Date"].unique(), reverse=True)
@@ -84,6 +85,20 @@ if st.session_state.records:
         else:
             break
     st.metric("Current Streak", f"{streak} days")
+
+    st.subheader("📅 This Week's Summary")
+    
+    last_7_days = pd.Timestamp.now().normalize().date() - pd.Timedelta(days=7)
+    df["Date"] = pd.to_datetime(df["Date"]).dt.date
+    week_df = df[df["Date"] >= last_7_days]
+
+    if not week_df.empty:
+        col1, col2, col3 = st.columns(3)
+        col1.metric("Hours This Week", f"{week_df['Hours'].sum():.1f}")
+        col2.metric("Avg Marks", f"{week_df['Marks'].mean():.1f}")
+        col3.metric("Sessions", len(week_df))
+    else:
+        st.info("No study sessions in the last 7 days.")
 
     top_subject = df.groupby("Subject")["Hours"].sum().idxmax()
     top_hours = df.groupby("Subject")["Hours"].sum().max()
