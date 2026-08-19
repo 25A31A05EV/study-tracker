@@ -133,6 +133,16 @@ if st.session_state.records:
     day_hours = df.groupby("Day_of_Week")["Hours"].sum()
     st.bar_chart(day_hours)
 
+    st.subheader("📊 Best & Worst Study Day")
+
+    day_hours = df.groupby("Day_of_Week")["Hours"].sum()
+    best_day = day_hours.idxmax()
+    worst_day = day_hours.idxmin()
+
+    col1, col2 = st.columns(2)
+    col1.metric("🏆 Best Day", best_day, f"{day_hours.max():.1f} hrs")
+    col2.metric("📉 Needs Focus", worst_day, f"{day_hours.min():.1f} hrs")
+
     # Marks Trend Chart
     st.subheader("📈 Marks Trend Over Time")
     df_sorted = df.sort_values("Date")
