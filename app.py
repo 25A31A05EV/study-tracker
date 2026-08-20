@@ -127,6 +127,16 @@ if st.session_state.records:
     subject_avg_marks = df.groupby("Subject")["Marks"].mean()
     st.bar_chart(subject_avg_marks)
 
+    # Grade Distribution using pd.cut()
+    st.subheader("🎓 Grade Distribution")
+    df["Grade"] = pd.cut(
+        df["Marks"],
+        bins=[0, 35, 55, 65, 77, 85, 100],
+        labels=["F", "E", "D", "C", "B", "A"]
+    )
+    grade_counts = df["Grade"].value_counts().sort_index()
+    st.bar_chart(grade_counts)
+
     # Study Pattern by Day of Week
     st.subheader("📅 Study Pattern by Day")
     df["Day_of_Week"] = pd.to_datetime(df["Date"]).dt.day_name()
