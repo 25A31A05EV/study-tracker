@@ -59,6 +59,7 @@ if st.button("Submit"):
 if st.session_state.records:
 
     df = pd.DataFrame(st.session_state.records)
+    df["Subject"] = df["Subject"].str.strip().str.title()
     df["Performance"] = df["Marks"].apply(
         lambda x: "🌟 Excellent" if x >= 85 else ("✅ Good" if x >= 70 else "⚠️ Needs Improvement")
     )
