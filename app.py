@@ -67,12 +67,13 @@ if st.session_state.records:
     # Dashboard
     st.subheader("📊 Dashboard")
 
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4, col5 = st.columns(5)
 
     col1.metric("📚 Total Hours", f"{df['Hours'].sum():.1f}")
     col2.metric("📖 Subjects", df["Subject"].nunique())
     col3.metric("📝 Records", len(df))
     col4.metric("⏱️ Avg Hrs/Session", f"{df['Hours'].sum()/len(df):.2f}")
+    col5.metric("📅 Days Tracked", df["Date"].nunique())
 
     # Study Streak Counter
     st.subheader("🔥 Study Streak")
