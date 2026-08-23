@@ -102,6 +102,21 @@ if st.session_state.records:
     else:
         st.info("No study sessions in the last 7 days.")
 
+    st.subheader("📆 This Month's Summary")
+    
+    df["Date"] = pd.to_datetime(df["Date"])
+    current_month = pd.Timestamp.now().month
+    current_year = pd.Timestamp.now().year
+    month_df = df[(df["Date"].dt.month == current_month) & (df["Date"].dt.year == current_year)]
+
+    if not month_df.empty:
+        col1, col2, col3 = st.columns(3)
+        col1.metric("Hours This Month", f"{month_df['Hours'].sum():.1f}")
+        col2.metric("Avg Marks", f"{month_df['Marks'].mean():.1f}")
+        col3.metric("Sessions", len(month_df))
+    else:
+        st.info("No study sessions this month.")
+
     top_subject = df.groupby("Subject")["Hours"].sum().idxmax()
     top_hours = df.groupby("Subject")["Hours"].sum().max()
 
