@@ -175,6 +175,11 @@ if st.session_state.records:
     df_sorted = df.sort_values("Date")
     st.line_chart(df_sorted.set_index("Date")["Marks"])
 
+    st.subheader("📈 Cumulative Study Hours")
+    df_sorted_cum = df.sort_values("Date")
+    df_sorted_cum["Cumulative_Hours"] = df_sorted_cum["Hours"].cumsum()
+    st.line_chart(df_sorted_cum.set_index("Date")["Cumulative_Hours"])
+
     # Download CSV
     csv = df.to_csv(index=False).encode("utf-8")
 
