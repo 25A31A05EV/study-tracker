@@ -154,6 +154,13 @@ if st.session_state.records:
     grade_counts = df["Grade"].value_counts().sort_index()
     st.bar_chart(grade_counts)
 
+    st.subheader("🏆 Subject Ranking (by Avg Marks)")
+    subject_avg = df.groupby("Subject")["Marks"].mean().reset_index()
+    subject_avg.columns = ["Subject", "Avg_Marks"]
+    subject_avg["Rank"] = subject_avg["Avg_Marks"].rank(ascending=False).astype(int)
+    subject_avg = subject_avg.sort_values("Rank")
+    st.dataframe(subject_avg, width='stretch')
+
     # Study Pattern by Day of Week
     st.subheader("📅 Study Pattern by Day")
     df["Day_of_Week"] = pd.to_datetime(df["Date"]).dt.day_name()
