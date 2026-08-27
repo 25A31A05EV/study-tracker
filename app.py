@@ -75,6 +75,11 @@ if st.session_state.records:
     col4.metric("⏱️ Avg Hrs/Session", f"{df['Hours'].sum()/len(df):.2f}")
     col5.metric("📅 Days Tracked", df["Date"].nunique())
 
+    # Duplicate Entry Check
+    duplicate_count = df.duplicated(subset=["Subject", "Date"]).sum()
+    if duplicate_count > 0:
+        st.warning(f"⚠️ Found {duplicate_count} duplicate entries (same subject + date). Consider reviewing your records.")
+
     # Study Streak Counter
     st.subheader("🔥 Study Streak")
     unique_dates = sorted(df["Date"].unique(), reverse=True)
