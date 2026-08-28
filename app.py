@@ -75,6 +75,18 @@ if st.session_state.records:
     col4.metric("⏱️ Avg Hrs/Session", f"{df['Hours'].sum()/len(df):.2f}")
     col5.metric("📅 Days Tracked", df["Date"].nunique())
 
+    st.subheader("💡 Random Motivation")
+    tips = [
+        "Consistency beats intensity — small daily progress wins.",
+        "Review what confused you yesterday before learning something new.",
+        "Explain it out loud — if you can't explain it, you don't fully know it yet.",
+        "Track your weak areas honestly — that's where the real growth happens.",
+        "Every problem you solve cold (without help) builds real interview confidence."
+    ]
+    tips_df = pd.DataFrame({"Tip": tips})
+    random_tip = tips_df.sample(n=1)["Tip"].values[0]
+    st.info(f"💡 {random_tip}")
+
     # Duplicate Entry Check
     duplicate_count = df.duplicated(subset=["Subject", "Date"]).sum()
     if duplicate_count > 0:
