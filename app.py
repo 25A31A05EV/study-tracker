@@ -178,6 +178,10 @@ if st.session_state.records:
     subject_avg = subject_avg.sort_values("Rank")
     st.dataframe(subject_avg, width='stretch')
 
+    st.subheader("⭐ Top 5 Study Sessions (by Marks)")
+    top_sessions = df.nlargest(5, "Marks")[["Subject", "Marks", "Hours", "Date"]]
+    st.dataframe(top_sessions, width='stretch')
+
     # Study Pattern by Day of Week
     st.subheader("📅 Study Pattern by Day")
     df["Day_of_Week"] = pd.to_datetime(df["Date"]).dt.day_name()
