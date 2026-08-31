@@ -182,6 +182,11 @@ if st.session_state.records:
     top_sessions = df.nlargest(5, "Marks")[["Subject", "Marks", "Hours", "Date"]]
     st.dataframe(top_sessions, width='stretch')
 
+    st.subheader("⚡ Study Efficiency (Marks per Hour)")
+    df["Efficiency"] = df.apply(lambda row: row["Marks"] / row["Hours"] if row["Hours"] > 0 else 0, axis=1)
+    efficiency_by_subject = df.groupby("Subject")["Efficiency"].mean().sort_values(ascending=False)
+    st.bar_chart(efficiency_by_subject)
+
     # Study Pattern by Day of Week
     st.subheader("📅 Study Pattern by Day")
     df["Day_of_Week"] = pd.to_datetime(df["Date"]).dt.day_name()
