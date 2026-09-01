@@ -187,6 +187,10 @@ if st.session_state.records:
     efficiency_by_subject = df.groupby("Subject")["Efficiency"].mean().sort_values(ascending=False)
     st.bar_chart(efficiency_by_subject)
 
+    st.subheader("📊 Subject vs Performance Breakdown")
+    performance_crosstab = pd.crosstab(df["Subject"], df["Performance"])
+    st.dataframe(performance_crosstab, width='stretch')
+
     # Study Pattern by Day of Week
     st.subheader("📅 Study Pattern by Day")
     df["Day_of_Week"] = pd.to_datetime(df["Date"]).dt.day_name()
