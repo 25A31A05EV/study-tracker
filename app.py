@@ -182,6 +182,13 @@ if st.session_state.records:
     top_sessions = df.nlargest(5, "Marks")[["Subject", "Marks", "Hours", "Date"]]
     st.dataframe(top_sessions, width='stretch')
 
+    st.subheader("🌟 Your Best Study Session")
+    best_session = df.loc[df["Marks"].idxmax()]
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Subject", best_session["Subject"])
+    col2.metric("Marks", f"{best_session['Marks']:.0f}")
+    col3.metric("Hours", f"{best_session['Hours']:.1f}")
+
     st.subheader("⚡ Study Efficiency (Marks per Hour)")
     df["Efficiency"] = df.apply(lambda row: row["Marks"] / row["Hours"] if row["Hours"] > 0 else 0, axis=1)
     efficiency_by_subject = df.groupby("Subject")["Efficiency"].mean().sort_values(ascending=False)
