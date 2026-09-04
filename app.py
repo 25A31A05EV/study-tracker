@@ -64,6 +64,9 @@ if st.session_state.records:
         lambda x: "🌟 Excellent" if x >= 85 else ("✅ Good" if x >= 70 else "⚠️ Needs Improvement")
     )
 
+    df["Status"] = df["Marks"].where(df["Marks"] >= 40, "❌ Fail")
+    df["Status"] = df["Status"].where(df["Marks"] < 40, "✅ Pass")
+
     # Dashboard
     st.subheader("📊 Dashboard")
 
