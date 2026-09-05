@@ -67,6 +67,9 @@ if st.session_state.records:
     df["Status"] = df["Marks"].where(df["Marks"] >= 40, "❌ Fail")
     df["Status"] = df["Status"].where(df["Marks"] < 40, "✅ Pass")
 
+    df["Subject_Avg_Marks"] = df.groupby("Subject")["Marks"].transform("mean")
+    df["Vs_Average"] = df["Marks"] - df["Subject_Avg_Marks"]
+
     # Dashboard
     st.subheader("📊 Dashboard")
 
