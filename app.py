@@ -188,6 +188,13 @@ if st.session_state.records:
     top_sessions = df.nlargest(5, "Marks")[["Subject", "Marks", "Hours", "Date"]]
     st.dataframe(top_sessions, width='stretch')
 
+    st.subheader("⏰ Your Longest Study Session")
+    longest_session = df.loc[df["Hours"].idxmax()]
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Subject", longest_session["Subject"])
+    col2.metric("Hours", f"{longest_session['Hours']:.1f}")
+    col3.metric("Marks", f"{longest_session['Marks']:.0f}")
+
     st.subheader("🌟 Your Best Study Session")
     best_session = df.loc[df["Marks"].idxmax()]
     col1, col2, col3 = st.columns(3)
