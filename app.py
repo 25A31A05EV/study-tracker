@@ -211,6 +211,10 @@ if st.session_state.records:
     performance_crosstab = pd.crosstab(df["Subject"], df["Performance"])
     st.dataframe(performance_crosstab, width='stretch')
 
+    st.subheader("📆 Subject-wise Active Days")
+    subject_active_days = df.groupby("Subject")["Date"].nunique().sort_values(ascending=False)
+    st.bar_chart(subject_active_days)
+
     # Study Pattern by Day of Week
     st.subheader("📅 Study Pattern by Day")
     df["Day_of_Week"] = pd.to_datetime(df["Date"]).dt.day_name()
