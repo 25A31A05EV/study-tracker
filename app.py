@@ -219,6 +219,12 @@ if st.session_state.records:
     perf_percentage = (df["Performance"].value_counts(normalize=True) * 100).round(1)
     st.dataframe(perf_percentage, width='stretch')
 
+    st.subheader("📏 Marks Consistency by Subject (Range)")
+    def marks_range(x):
+        return x.max() - x.min()
+    consistency = df.groupby("Subject")["Marks"].agg(marks_range).sort_values()
+    st.bar_chart(consistency)
+
     # Study Pattern by Day of Week
     st.subheader("📅 Study Pattern by Day")
     df["Day_of_Week"] = pd.to_datetime(df["Date"]).dt.day_name()
