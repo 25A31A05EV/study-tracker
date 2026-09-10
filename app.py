@@ -157,6 +157,12 @@ if st.session_state.records:
         filtered_df = df
     st.dataframe(filtered_df, width='stretch')
 
+    st.subheader("🔍 Search Study Records")
+    search_term = st.text_input("Search by subject keyword:")
+    if search_term:
+        search_results = df[df["Subject"].str.contains(search_term, case=False, na=False)]
+        st.dataframe(search_results, width='stretch')
+
     # Subject-wise Chart
     st.subheader("📈 Subject-wise Study Hours")
     subject_hours = df.groupby("Subject")["Hours"].sum()
