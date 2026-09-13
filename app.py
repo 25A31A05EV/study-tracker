@@ -231,6 +231,14 @@ if st.session_state.records:
     consistency = df.groupby("Subject")["Marks"].agg(marks_range).sort_values()
     st.bar_chart(consistency)
 
+    st.subheader("📋 Subject Summary (Mean, Max, Min)")
+    subject_summary = df.pivot_table(
+        values="Marks",
+        index="Subject",
+        aggfunc=["mean", "max", "min"]
+    )
+    st.dataframe(subject_summary, width='stretch')
+
     # Study Pattern by Day of Week
     st.subheader("📅 Study Pattern by Day")
     df["Day_of_Week"] = pd.to_datetime(df["Date"]).dt.day_name()
