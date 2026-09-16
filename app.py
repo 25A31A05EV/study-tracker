@@ -239,6 +239,14 @@ if st.session_state.records:
     )
     st.dataframe(subject_summary, width='stretch')
 
+    st.subheader("📊 Performance Quartiles")
+    if len(df) >= 4:
+        df["Quartile"] = pd.qcut(df["Marks"], q=4, labels=["Q1 (Lowest)", "Q2", "Q3", "Q4 (Highest)"], duplicates="drop")
+        quartile_counts = df["Quartile"].value_counts().sort_index()
+        st.bar_chart(quartile_counts)
+    else:
+        st.info("Add at least 4 records to see quartile analysis.")
+
     # Study Pattern by Day of Week
     st.subheader("📅 Study Pattern by Day")
     df["Day_of_Week"] = pd.to_datetime(df["Date"]).dt.day_name()
