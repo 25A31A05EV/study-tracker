@@ -268,6 +268,12 @@ if st.session_state.records:
     df_sorted = df.sort_values("Date")
     st.line_chart(df_sorted.set_index("Date")["Marks"])
 
+    st.subheader("📈 Marks Change from Previous Session")
+    df_sorted_shift = df.sort_values("Date").copy()
+    df_sorted_shift["Previous_Marks"] = df_sorted_shift["Marks"].shift(1)
+    df_sorted_shift["Change"] = df_sorted_shift["Marks"] - df_sorted_shift["Previous_Marks"]
+    st.dataframe(df_sorted_shift[["Date", "Subject", "Marks", "Previous_Marks", "Change"]], width='stretch')
+
     st.subheader("📈 Cumulative Study Hours")
     df_sorted_cum = df.sort_values("Date")
     df_sorted_cum["Cumulative_Hours"] = df_sorted_cum["Hours"].cumsum()
