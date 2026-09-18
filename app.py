@@ -333,6 +333,20 @@ if st.session_state.records:
     if st.button("🗑️ Clear All Records"):
         st.session_state.records = []
         st.rerun()
+
+
+    st.subheader("📊 Hours-Marks Correlation")
+    if len(df) >= 3:
+        correlation = df["Hours"].corr(df["Marks"])
+        st.metric("Correlation Coefficient", f"{correlation:.3f}")
+        if correlation > 0.7:
+            st.success("Strong positive correlation — more study hours tend to mean higher marks!")
+        elif correlation > 0.3:
+            st.info("Moderate positive correlation.")
+        else:
+            st.warning("Weak correlation — other factors may be influencing your marks.")
+    else:
+        st.info("Need at least 3 records to calculate correlation.")
 # ----------------------------
 # Grade Predictor
 # ----------------------------
