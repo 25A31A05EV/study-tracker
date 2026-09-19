@@ -268,6 +268,13 @@ if st.session_state.records:
     df_sorted = df.sort_values("Date")
     st.line_chart(df_sorted.set_index("Date")["Marks"])
 
+    st.subheader("🗓️ Date vs Subject Marks Grid")
+    try:
+        pivot_grid = df.pivot_table(index="Date", columns="Subject", values="Marks", aggfunc="mean")
+        st.dataframe(pivot_grid, width='stretch')
+    except Exception:
+        st.info("Add more records with different dates/subjects to see this grid.")
+
     st.subheader("📈 Marks Change from Previous Session")
     df_sorted_shift = df.sort_values("Date").copy()
     df_sorted_shift["Previous_Marks"] = df_sorted_shift["Marks"].shift(1)
