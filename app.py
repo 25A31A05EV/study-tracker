@@ -275,6 +275,10 @@ if st.session_state.records:
     except Exception:
         st.info("Add more records with different dates/subjects to see this grid.")
 
+    st.subheader("🏅 Top 2 Sessions per Subject")
+    top2_per_subject = df.groupby("Subject", group_keys=False).apply(lambda x: x.nlargest(2, "Marks"))
+    st.dataframe(top2_per_subject[["Subject","Marks","Hours","Date"]], width='stretch')
+
     st.subheader("📈 Marks Change from Previous Session")
     df_sorted_shift = df.sort_values("Date").copy()
     df_sorted_shift["Previous_Marks"] = df_sorted_shift["Marks"].shift(1)
