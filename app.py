@@ -217,6 +217,17 @@ if st.session_state.records:
     performance_crosstab = pd.crosstab(df["Subject"], df["Performance"])
     st.dataframe(performance_crosstab, width='stretch')
 
+    st.subheader("📋 Performance Summary")
+
+    performance_summary = df[
+        ["Subject", "Marks", "Performance"]
+    ].sort_values("Marks", ascending=False)
+
+    st.dataframe(
+        performance_summary,
+        width="stretch"
+    )
+
     st.subheader("📆 Subject-wise Active Days")
     subject_active_days = df.groupby("Subject")["Date"].nunique().sort_values(ascending=False)
     st.bar_chart(subject_active_days)
