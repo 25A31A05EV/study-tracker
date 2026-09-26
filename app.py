@@ -20,14 +20,22 @@ if "records" not in st.session_state:
 # ----------------------------
 # User Input
 # ----------------------------
+
 name = st.text_input("Enter your name:")
 subject = st.text_input("Enter subject studied today:")
+
+topics_input = st.text_input(
+    "Study Topics:",
+    placeholder="Python, SQL, Machine Learning"
+)
+
 hours = st.number_input(
     "Hours studied:",
     min_value=0.0,
     max_value=24.0,
     step=0.5
 )
+
 date = st.date_input("Date:")
 marks = st.number_input(
     "Marks scored (out of 100):",
@@ -40,10 +48,18 @@ marks = st.number_input(
 # ----------------------------
 if st.button("Submit"):
     if name.strip() and subject.strip():
+
+        topics = [
+            topic.strip()
+            for topic in topics_input.split(",")
+            if topic.strip()
+        ]
+
         st.session_state.records.append(
             {
                 "Name": name,
                 "Subject": subject,
+                "Topics": topics,
                 "Hours": hours,
                 "Date": date,
                 "Marks": marks
