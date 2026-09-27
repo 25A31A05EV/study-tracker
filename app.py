@@ -75,6 +75,9 @@ if st.button("Submit"):
 if st.session_state.records:
 
     df = pd.DataFrame(st.session_state.records)
+
+    df["Topics"] = df["Topics"].str.join(", ")
+    
     df["Subject"] = (
         df["Subject"]
         .str.strip()
