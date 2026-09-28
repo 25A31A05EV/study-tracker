@@ -182,9 +182,23 @@ if st.session_state.records:
     st.dataframe(filtered_df, width='stretch')
 
     st.subheader("🔍 Search Study Records")
-    search_term = st.text_input("Search by subject keyword:")
+    search_term = st.text_input("Search by subject or topic:")
+
     if search_term:
-        search_results = df[df["Subject"].str.contains(search_term, case=False, na=False)]
+        search_results = df[
+            df["Subject"].str.contains(
+                search_term,
+                case=False,
+                na=False
+            )
+            |
+            df["Topics"].str.contains(
+                search_term,
+                case=False,
+                na=False
+            )
+        ]
+
         st.dataframe(search_results, width='stretch')
 
     # Subject-wise Chart
