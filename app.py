@@ -228,6 +228,34 @@ if st.session_state.records:
     subject_avg = subject_avg.sort_values("Rank")
     st.dataframe(subject_avg, width='stretch')
 
+    # --------------------------------
+    # Subject Performance Summary
+    # --------------------------------
+    st.subheader("📊 Subject Performance Summary")
+
+    subject_summary = (
+        df.groupby("Subject")
+        .agg(
+            Total_Hours=("Hours", "sum"),
+            Avg_Hours=("Hours", "mean"),
+            Avg_Marks=("Marks", "mean"),
+            Max_Marks=("Marks", "max"),
+            Min_Marks=("Marks", "min"),
+            Sessions=("Subject", "size"),
+            Active_Days=("Date", "nunique")
+        )
+        .reset_index()
+        .sort_values(
+            ["Avg_Marks", "Total_Hours"],
+            ascending=[False, False]
+        )
+    )
+
+    subject_summary["Avg_Hours"] = subject_summary["Avg_Hours"].round(2)
+    subject_summary["Avg_Marks"] = subject_summary["Avg_Marks"].round(2)
+
+    st.dataframe(subject_summary, width="stretch")
+
     st.subheader("⭐ Top 5 Study Sessions (by Marks)")
     top_sessions = df.nlargest(5, "Marks")[["Subject", "Marks", "Hours", "Date"]]
     st.dataframe(top_sessions, width='stretch')
